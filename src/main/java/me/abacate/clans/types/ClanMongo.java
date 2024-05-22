@@ -3,16 +3,17 @@ package me.abacate.clans.types;
 import org.bson.Document;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ClanMongo extends Document {
     private String name;
-    private List<UUID> members;
+    private List<String> members;
     private int points;
     private List<String> enemies;
     private List<String> allies;
-    private UUID owner;
-    public ClanMongo(String name, List<UUID> members, int points, List<String> enemies, List<String> allies,UUID owner) {
+    private String owner;
+    public ClanMongo(String name, List<String> members, int points, List<String> enemies, List<String> allies,String owner) {
         this.name = name;
         this.members = members;
         this.points = points;
@@ -28,11 +29,11 @@ public class ClanMongo extends Document {
         this.name = name;
     }
 
-    public List<UUID> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(List<UUID> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 
@@ -59,10 +60,13 @@ public class ClanMongo extends Document {
     public void setAllies(List<String> allies) {
         this.allies = allies;
     }
-    public UUID getOwner(){
-        return owner;
+    public String getOwner(){
+        return owner.toString();
     }
     public void setOwner(UUID newOwner){
-        this.owner = newOwner;
+        this.owner = newOwner.toString();
+    }
+    public boolean isOwner(UUID player){
+        return Objects.equals(owner.toString(), player.toString());
     }
 }

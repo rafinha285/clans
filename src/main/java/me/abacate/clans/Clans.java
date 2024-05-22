@@ -3,8 +3,10 @@ package me.abacate.clans;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import me.abacate.clans.commands.AddClan;
+import me.abacate.clans.commands.*;
 import me.abacate.clans.listeners.PlayerDeathListener;
+import me.abacate.clans.managers.AllyInviteManager;
+import me.abacate.clans.managers.InviteManager;
 import me.abacate.clans.managers.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,6 +21,8 @@ public final class Clans extends JavaPlugin implements Listener {
     public MongoClient mongoClient;
     public MongoDatabase database;
     private PlayerManager playerManager;
+    private InviteManager inviteManager;
+    private AllyInviteManager allyInviteManager;
     private BukkitTask AutoSaveTask;
 
     //    public MongoCollection<Document> playerPointsCollection;
@@ -28,18 +32,24 @@ public final class Clans extends JavaPlugin implements Listener {
         mongoClient = MongoClients.create("mongodb://192.168.1.20:27017/");
         database = mongoClient.getDatabase("minecraft");
         playerManager = new PlayerManager(database);
+        inviteManager = new InviteManager();
+        allyInviteManager = new AllyInviteManager();
 
         Bukkit.getPluginManager().registerEvents(this, this);
 //        Bukkit.getPluginManager().registerEvents(new CreateClanListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(database,this),this);
         AutoSaveTask = getServer().getScheduler().runTaskTimer(this,new AutoSave(database),100,200);
         Bukkit.getLogger().info(getCommand("addClan").toString());
-        if (getCommand("addClan") == null) {
-            getLogger().severe("Comando 'addClan' não encontrado no plugin.yml");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+
+        getCommand("deleteClan").setExecutor(new DeleteClan(database));
         getCommand("addClan").setExecutor(new AddClan(database));
+        getCommand("sendInvite").setExecutor(new SendInvite(inviteManager,database));
+        getCommand("acceptInvite").setExecutor(new AcceptInvite(inviteManager,database));
+        getCommand("rejectInvite").setExecutor(new RejectInvite(inviteManager));
+
+        getCommand("sendAllyInvite").setExecutor(new SendAllyInvite(allyInviteManager,database));
+        getCommand("acceptAllyInvite").setExecutor(new AcceptAllyInvite(allyInviteManager,database));
+        getCommand("rejectAllyInvite").setExecutor(new RejectAllyInvite(allyInviteManager,database));
 //        playerPointsCollection =
     }
 

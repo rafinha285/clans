@@ -6,3 +6,29 @@ commands:
   addClan:
     description: "Cria um Clã"
     usage: /addClan
+  deleteClan:
+    usage: /deleteClan
+  addAlly:
+    usage: /addAlly
+  addEnemy:
+    usage: /addEnemy
+  sendInvite:
+    usage: /sendInvite
+  acceptInvite:
+    usage: /acceptInvite
+  rejectInvite:
+    usage: /rejectInvite
+  sendAllyInvite:
+    usage: /sendAllyInvite
+  acceptAllyInvite:
+    usage: /acceptAllyInvite
+  rejectAllyInvite:
+    usage: /rejectAllyInvite
+  leaveClan:
+    usage: /leaveClan
+  removeAlly:
+    usage: /removeAlly
+  removeEnemy:
+    usage: /removeEnemy
+  removeMember:
+    usage: /removeMember

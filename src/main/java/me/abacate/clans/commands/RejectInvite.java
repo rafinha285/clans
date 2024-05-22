@@ -1,10 +1,7 @@
 package me.abacate.clans.commands;
 
-import com.mongodb.client.MongoDatabase;
-import me.abacate.clans.managers.ClanManager;
 import me.abacate.clans.managers.InviteManager;
 import me.abacate.clans.types.ClanInvite;
-import me.abacate.clans.types.ClanMongo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,13 +10,11 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class AcceptInvite implements CommandExecutor{
+public class RejectInvite implements CommandExecutor{
     private final InviteManager inviteManager;
-    private final ClanManager clanManager;
 
-    public AcceptInvite(InviteManager inviteManager,MongoDatabase database) {
+    public RejectInvite(InviteManager inviteManager) {
         this.inviteManager = inviteManager;
-        this.clanManager = new ClanManager(database);
     }
 
     @Override
@@ -38,16 +33,12 @@ public class AcceptInvite implements CommandExecutor{
         }
 
         ClanInvite invite = inviteManager.getInvite(playerUUID);
-
-        ClanMongo clan = clanManager.getClan(invite.getClanName());
-        clanManager.addMembers(clan,player);
-
         inviteManager.removeInvite(playerUUID);
 
-        player.sendMessage("Você aceitou o convite para o clã " + invite.getClanName());
+        player.sendMessage("Você rejeitou o convite para o clã " + invite.getClanName());
         Player senderPlayer = Bukkit.getPlayer(invite.getSender());
         if (senderPlayer != null) {
-            senderPlayer.sendMessage(player.getName() + " aceitou seu convite para o clã.");
+            senderPlayer.sendMessage(player.getName() + " rejeitou seu convite para o clã.");
         }
 
         return true;

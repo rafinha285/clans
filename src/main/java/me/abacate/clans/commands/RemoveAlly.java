@@ -1,4 +1,4 @@
 package me.abacate.clans.commands;
 
-public class AddAlly {
+public class RemoveAlly {
 }
