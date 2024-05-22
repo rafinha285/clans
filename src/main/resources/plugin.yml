@@ -1,0 +1,8 @@
+name: clans
+version: '${project.version}'
+main: me.abacate.clans.Clans
+api-version: '1.20'
+commands:
+  addClan:
+    description: "Cria um Clã"
+    usage: /addClan
