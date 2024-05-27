@@ -47,6 +47,9 @@ public class SendAllyInvite implements CommandExecutor, TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-        return clanManager.getAllClans().stream().map(a->a.getName()).collect(Collectors.toList());
+        ClanMongo clan = clanManager.getClan(clanManager.getClanFromPlayer((Player) commandSender));
+        List<ClanMongo> clans = clanManager.getAllClans();
+        clans.remove(clan);
+        return clans.stream().map(a->a.getName()).collect(Collectors.toList());
     }
 }

@@ -1,0 +1,12 @@
+killPoints: 10
+enemyPoints: 20
+points:
+  nopoints: 0
+  first: 50
+  mid: 200
+  final: 400
+clanPoints:
+  nopoints: 0
+  first: 200
+  mid: 1000
+  final: 3000

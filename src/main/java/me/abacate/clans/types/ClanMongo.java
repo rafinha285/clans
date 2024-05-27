@@ -13,13 +13,15 @@ public class ClanMongo extends Document {
     private List<String> enemies;
     private List<String> allies;
     private String owner;
-    public ClanMongo(String name, List<String> members, int points, List<String> enemies, List<String> allies,String owner) {
+    private String prefix;
+    public ClanMongo(String name, List<String> members, int points, List<String> enemies, List<String> allies,String owner,String prefix) {
         this.name = name;
         this.members = members;
         this.points = points;
         this.enemies = enemies;
         this.allies = allies;
         this.owner = owner;
+        this.prefix = prefix;
     }
     public String getName() {
         return name;
@@ -68,5 +70,11 @@ public class ClanMongo extends Document {
     }
     public boolean isOwner(UUID player){
         return Objects.equals(owner.toString(), player.toString());
+    }
+    public String getPrefix(){
+        return prefix;
+    }
+    public void setPrefix(String prefix){
+        this.prefix = prefix;
     }
 }

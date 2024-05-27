@@ -3,6 +3,7 @@ package me.abacate.clans.commands;
 import com.mongodb.client.MongoDatabase;
 import me.abacate.clans.managers.ClanManager;
 import me.abacate.clans.managers.InviteManager;
+import me.abacate.clans.managers.PlayerManager;
 import me.abacate.clans.types.ClanInvite;
 import me.abacate.clans.types.ClanMongo;
 import org.bukkit.Bukkit;
@@ -16,10 +17,12 @@ import java.util.UUID;
 public class AcceptInvite implements CommandExecutor{
     private final InviteManager inviteManager;
     private final ClanManager clanManager;
+    private final PlayerManager playerManager;
 
     public AcceptInvite(InviteManager inviteManager,MongoDatabase database) {
         this.inviteManager = inviteManager;
         this.clanManager = new ClanManager(database);
+        this.playerManager = new PlayerManager(database);
     }
 
     @Override
@@ -41,6 +44,7 @@ public class AcceptInvite implements CommandExecutor{
 
         ClanMongo clan = clanManager.getClan(invite.getClanName());
         clanManager.addMembers(clan,player);
+        playerManager.setClan(player,clan.getName());
 
         inviteManager.removeInvite(playerUUID);
 

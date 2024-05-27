@@ -1,29 +1,40 @@
 package me.abacate.clans.types;
 
+import org.bson.Document;
 import org.bukkit.entity.Player;
+
 
 import java.util.UUID;
 
 public class PlayerMongo {
-    private UUID _id;
+    private String _id;
     private String name;
     private String clan;
     private int points;
 
-    public PlayerMongo(Player player, String clan, Integer points) {
-        this._id = player.getUniqueId();
-        this.name = player.getName();
+    public PlayerMongo(String id,String name, String clan, Integer points) {
+        this._id = id;
+        this.name = name;
         this.clan = clan;
         this.points = points;
     }
 
+    public static PlayerMongo fromDocument(Document doc){
+        return new PlayerMongo(
+            doc.getString("_id"),
+            doc.getString("name"),
+            doc.getString("clan"),
+            doc.getInteger("points")
+        );
+    }
+
     // getters and setters
 
-    public UUID getId() {
+    public String getId() {
         return _id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this._id = id;
     }
 

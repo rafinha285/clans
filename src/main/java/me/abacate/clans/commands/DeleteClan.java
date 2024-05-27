@@ -2,6 +2,7 @@ package me.abacate.clans.commands;
 
 import com.mongodb.client.MongoDatabase;
 import me.abacate.clans.managers.ClanManager;
+import me.abacate.clans.managers.PlayerManager;
 import me.abacate.clans.types.ClanMongo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -13,12 +14,15 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DeleteClan implements CommandExecutor, TabExecutor {
     ClanManager clanManager;
+    PlayerManager playerManager;
     public DeleteClan(MongoDatabase database){
         clanManager = new ClanManager(database);
+        playerManager = new PlayerManager(database);
     }
 
     @Override
@@ -35,6 +39,11 @@ public class DeleteClan implements CommandExecutor, TabExecutor {
             Bukkit.getLogger().info("Você não é o dono do clã");
             commandSender.sendMessage("Você não é o dono do clã");
             return true;
+        }
+        for (String player1:clan.getMembers()){
+            Player clanPlayer = Bukkit.getPlayer(UUID.fromString(player1));
+            clanPlayer.sendMessage("Clã "+clan.getName()+" desmantelado, você saiu do clã.");
+            playerManager.setClan(clanPlayer,"");
         }
         clanManager.deleteClan(clan);
         Bukkit.getLogger().warning("Clã: "+clan.getName()+" deletado com sucesso");

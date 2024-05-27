@@ -10,11 +10,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class SendInvite implements CommandExecutor {
+public class SendInvite implements CommandExecutor, TabExecutor {
     private final InviteManager inviteManager;
     private final ClanManager clanManager;
 
@@ -38,6 +41,10 @@ public class SendInvite implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        if(Bukkit.getPlayerExact(args[0])==player){
+            sender.sendMessage("Não da pra se convidar");
+            return true;
+        }
         ClanMongo clan = clanManager.getClan(clanManager.getClanFromPlayer(player));
         if(clan == null){
             sender.sendMessage("Você não é dono de nenhum clã");
@@ -63,5 +70,10 @@ public class SendInvite implements CommandExecutor {
                 ChatColor.GOLD+"use /acceptInvite "+ player.getName()+" para aceitar convite");
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        return null;
     }
 }

@@ -5,6 +5,7 @@ import me.abacate.clans.Clans;
 import me.abacate.clans.config.ConfigManager;
 import me.abacate.clans.managers.PlayerManager;
 import me.abacate.clans.managers.ClanManager;
+import me.abacate.clans.types.ClanMongo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,29 +29,57 @@ public class PlayerDeathListener implements Listener {
         if (killer!= null){
             int victimPoints = playerManager.getPointsPlayer(victim);
             int killerPoints = playerManager.getPointsPlayer(killer);
-            String victimClan = clanManager.getClanFromPlayer(victim);
-            String killerClan = clanManager.getClanFromPlayer(killer);
+            ClanMongo victimClan = clanManager.getClan(clanManager.getClanFromPlayer(victim));
+            ClanMongo killerClan = clanManager.getClan(clanManager.getClanFromPlayer(killer));
             boolean isEnemy;
-            if(killerClan == "" && victimClan == ""){
+            boolean isAlly;
+            boolean sameClan;
+            boolean isInClan;
+
+            if(!(killerClan == null || victimClan == null)){
                 isEnemy = clanManager.isEnemy(victimClan,killerClan);
+                isAlly = clanManager.isAlly(victimClan,killerClan);
             }else{
                 isEnemy= false;
+                isAlly = false;
+//                sameClan = false;
             }
-            if(isEnemy){
-                if(victimPoints == 0){
-                    playerManager.setPointsPlayer(killer,killerPoints+configManager.getEnemyPoints());
-                }else{
-                    playerManager.setPointsPlayer(killer,killerPoints+victimPoints);
-                    playerManager.setPointsPlayer(victim,0);
-                }
+//            if()
+//            if(victimClan.getName() == ""){
+//                isInClan = false;
+//            }
+            if(victimClan == killerClan&&!(victimClan==null)&&!(victimClan==null)){
+                sameClan= true;
+
+            }else {
+                sameClan=false;
+
+            }
+            if(sameClan){
+                Bukkit.getLogger().info("são do mesmo clã");
             }else{
-                if(victimPoints == 0){
-                    playerManager.setPointsPlayer(killer,killerPoints+configManager.getKillPoints());
+                if(isEnemy){
+                    if(victimPoints == 0){
+                        playerManager.setPointsPlayer(killer,killerPoints+configManager.getEnemyPoints());
+    
+                    }else{
+                        playerManager.setPointsPlayer(killer,killerPoints+victimPoints);
+                        playerManager.setPointsPlayer(victim,0);
+                    }
                 }else{
-                    playerManager.setPointsPlayer(killer,killerPoints+victimPoints);
-                    playerManager.setPointsPlayer(victim,0);
+                    if(isAlly){
+                        Bukkit.getLogger().info("são aliados");
+                    }else{
+                        if(victimPoints == 0){
+                            playerManager.setPointsPlayer(killer,killerPoints+configManager.getKillPoints());
+                        }else{
+                            playerManager.setPointsPlayer(killer,killerPoints+victimPoints);
+                            playerManager.setPointsPlayer(victim,0);
+                        }
+                    }
                 }
             }
+            
         }
     }
 }

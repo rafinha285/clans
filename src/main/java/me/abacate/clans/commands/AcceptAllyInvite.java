@@ -56,6 +56,7 @@ public class AcceptAllyInvite implements CommandExecutor, TabExecutor {
 //        allyInviteManager.getAllyInviter(clan);
 //        return ;
 
+//        allyInviteManager.getAllyInviter(clan);
         return null;
     }
 }

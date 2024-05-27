@@ -25,6 +25,34 @@ public class ConfigManager {
         return config.getInt("enemyPoints");
     }
 
+    public int getNoPoints(){
+        return config.getInt("points.nopoints");
+    }
+    public int getFirstPoints(){
+        return config.getInt("points.first");
+    }
+    public int getMidPoints(){
+        return config.getInt("points.mid");
+    }
+    public int getFinalPoints(){
+        return config.getInt("points.final");
+    }
+
+    public int getNoClanPoints(){
+        return config.getInt("clanPoints.");
+    }
+    public int getFirstClanPoints(){
+        return config.getInt("clanPoints.");
+    }
+    public int getMidClanPoints(){
+        return config.getInt("clanPoints.");
+    }
+    public int getFinalClanPoints(){
+        return config.getInt("clanPoints.");
+    }
+
+
+
     public void saveConfig() {
         try {
             config.save(configFile);

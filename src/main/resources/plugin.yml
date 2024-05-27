@@ -7,28 +7,43 @@ commands:
     description: "Cria um Clã"
     usage: /addClan
   deleteClan:
+    description: "Deleta um Clã (é para sempre e sem verificação)"
     usage: /deleteClan
-  addAlly:
-    usage: /addAlly
   addEnemy:
+    description: "Adiciona um inimigo"
     usage: /addEnemy
   sendInvite:
+    description: "Manda um convite para outro jogador entra no clã"
     usage: /sendInvite
   acceptInvite:
+    description: "Aceita convite para entrar em clã"
     usage: /acceptInvite
   rejectInvite:
+    description: "Rejeita convite para entrar em clã"
     usage: /rejectInvite
   sendAllyInvite:
+    description: "Manda um convite de aliado para outro clã"
     usage: /sendAllyInvite
   acceptAllyInvite:
+    description: "Aceita convite de aliado"
     usage: /acceptAllyInvite
   rejectAllyInvite:
+    description: "Rejeita convite de aliado"
     usage: /rejectAllyInvite
   leaveClan:
+    description: "Sair do clã"
     usage: /leaveClan
   removeAlly:
+    description: "Remove aliado"
     usage: /removeAlly
   removeEnemy:
+    description: "Remove inimigo"
     usage: /removeEnemy
   removeMember:
+    description: "Remove membro"
     usage: /removeMember
+  setPrefix:
+    description: "Seta a tag do clã, em MAIUSCULO com no maximo 4 letras"
+    usage: /setPrefix
+#  openClanChest:
+#    usage: /openClanInventory

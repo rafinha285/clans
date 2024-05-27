@@ -12,27 +12,25 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeaveClan implements CommandExecutor, TabExecutor {
+public class SetPrefix implements CommandExecutor, TabExecutor {
     ClanManager clanManager;
-    public LeaveClan(MongoDatabase database){
+    public SetPrefix(MongoDatabase database){
         clanManager = new ClanManager(database);
     }
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+        if(args.length != 1){
+            commandSender.sendMessage("Falta argumentos");
+            return true;
+        }
+        ClanMongo clan = clanManager.getClan(clanManager.getClanFromPlayer((Player) commandSender));
         Player player = (Player) commandSender;
-        ClanMongo clan = clanManager.getClan(clanManager.getClanFromPlayer(player));
-
-        if(clan ==null){
-            commandSender.sendMessage("Você não esta em nenhum clã");
+        if(!clan.isOwner(player.getUniqueId())){
+            commandSender.sendMessage("Você não é o dono do clã");
             return true;
         }
-        if(clan.isOwner(player.getUniqueId())){
-            commandSender.sendMessage("Você não pode sair do clã que é dono, delete ele para poder sair");
-            return true;
-        }
-
-        clanManager.leaveClan(player,clan);
-        commandSender.sendMessage("Você saiu do clã "+clan.getName());
+        clanManager.setPrefix(clan,args[0]);
+        commandSender.sendMessage("Prefixo setado");
         return true;
     }
 
