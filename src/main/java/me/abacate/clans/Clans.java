@@ -31,6 +31,7 @@ public final class Clans extends JavaPlugin implements Listener {
     private InviteManager inviteManager;
     private AllyInviteManager allyInviteManager;
     private ClanManager clanManager;
+    private ClanChatManager clanChatManager;
     private ConfigManager configManager;
 //    private ClanChestManager chestManager;
     private BukkitTask AutoSaveTask;
@@ -54,6 +55,7 @@ public final class Clans extends JavaPlugin implements Listener {
         allyInviteManager = new AllyInviteManager();
 //        chestManager = new ClanChestManager(database);
         clanManager = new ClanManager(database);
+        clanChatManager = new ClanChatManager();
 
         luckPerms= LuckPermsProvider.get();
 
@@ -85,6 +87,7 @@ public final class Clans extends JavaPlugin implements Listener {
 
         getCommand("setPrefix").setExecutor(new SetPrefix(database));
 
+//        getCommand("toggleChat").setExecutor(new ChangeChat(database,clanChatManager));
 //        getCommand("openClanChest").setExecutor(new OpenClanChest(chestManager,playerManager));
 
 
@@ -107,48 +110,7 @@ public final class Clans extends JavaPlugin implements Listener {
         Bukkit.getLogger().info("clansManager "+player.getName());
         playerManager.checkAndAddPlayer(player);
     }
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e){
-        String message = e.getMessage();
-        Player player = e.getPlayer();
 
-        Bukkit.getLogger().info(message+player.getName());
-        ClanMongo clan = clanManager.getClan(clanManager.getClanFromPlayer(player));
-//        Bukkit.getLogger().info(clan.getName());
-        String clanPrefix;
-        if(clan == null){
-            clanPrefix = "";
-        }else{
-            clanPrefix= clan.getPrefix();
-        }
-
-        String primaryGroup = luckPerms.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix();
-        // Substituir placeholders na mensagem
-
-        // Adicione mais substituições de placeholders conforme necessário
-        String format = "";
-        if(primaryGroup!=null){
-            switch (primaryGroup) {
-                case "Vilão":
-                    format += ChatColor.RED;
-                    break;
-                case "Aldeão":
-                    format += ChatColor.BLUE;
-                    break;
-                case "ADM":
-                    format += ChatColor.LIGHT_PURPLE;
-            }
-            format+="[" + primaryGroup + "] "+ChatColor.RESET;
-        }
-        if(clanPrefix != null){
-            format += ChatColor.AQUA+"[" +ChatColor.AQUA+ clanPrefix + ChatColor.AQUA+"]"+ChatColor.RESET;
-        }
-        format +=" <" + player.getName() + ">: " + message;
-        Bukkit.getLogger().info(e.getFormat());
-        // Envie a nova mensagem
-        e.setFormat(format);
-
-    }
     @Override
     public void onDisable() {
         if(!AutoSaveTask.isCancelled()){
@@ -162,6 +124,55 @@ public final class Clans extends JavaPlugin implements Listener {
 //        }
         mongoClient.close();
         // Plugin shutdown logic
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        String message = event.getMessage();
+//        Bukkit.getLogger().info(message);
+        Player player = event.getPlayer();
+
+        String clanName = clanManager.getClanFromPlayer(player);
+        ClanMongo clan = clanManager.getClan(clanName);
+//        String clanPrefix = (clan == null) ? "" : clan.getPrefix();
+        String primaryGroup = luckPerms.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix();
+        Bukkit.getLogger().info(!clanName.isEmpty()?clanName:"aaaaa cu");
+        Bukkit.getLogger().info(clanChatManager.isClanChatEnabled(player.getUniqueId(),clanName)?player.getName():"cu2haaghagaha");
+        if(!clanName.isEmpty()&& clanChatManager.isClanChatEnabled(player.getUniqueId(),clanName)){
+            event.setCancelled(true);
+            String format = buildChatFormat(player, message, clan, primaryGroup);
+            clanChatManager.sendMessageToClan(clan.getName(), format);
+            Bukkit.getLogger().info(format);
+        }else{
+            String format = buildChatFormat(player, message, clan, primaryGroup);
+            event.setFormat(format);
+        }
+    }
+
+
+    private String buildChatFormat(Player player,String message,ClanMongo clan,String primaryGroup){
+        String format = "";
+        if (primaryGroup != null) {
+            switch (primaryGroup) {
+                case "Vilão":
+                    format += ChatColor.RED;
+                    break;
+                case "Aldeão":
+                    format += ChatColor.BLUE;
+                    break;
+                case "ADM":
+                    format += ChatColor.LIGHT_PURPLE;
+                    break;
+                default:
+                    format += ChatColor.WHITE;
+            }
+            format += "[" + primaryGroup + "] " + ChatColor.RESET;
+        }
+        if (clan.getPrefix() != null && !clan.getPrefix().isEmpty()) {
+            format += ChatColor.AQUA + "[" + clan.getPrefix() + "]" + ChatColor.RESET;
+        }
+        format += " <" + player.getName() + ">: " + message;
+        return format;
     }
 
 }

@@ -45,5 +45,51 @@ commands:
   setPrefix:
     description: "Seta a tag do clã, em MAIUSCULO com no maximo 4 letras"
     usage: /setPrefix
+#  toggleChat:
+#    description: "Troca o chat para o chat do clã"
+#    usage: /toggleChat
 #  openClanChest:
 #    usage: /openClanInventory
+permissions:
+  clans.add:
+    description: "Permissão para criar um clã"
+    default: true
+  clans.delete:
+    description: "Permissão para deletar um clã"
+    default: true
+  clans.addEnemy:
+    description: "Permissão para adicionar um inimigo"
+    default: true
+  clans.sendInvite:
+    description: "Permissão para enviar um convite para entrar no clã"
+    default: true
+  clans.acceptInvite:
+    description: "Permissão para aceitar um convite para entrar no clã"
+    default: true
+  clans.rejectInvite:
+    description: "Permissão para rejeitar um convite para entrar no clã"
+    default: true
+  clans.sendAllyInvite:
+    description: "Permissão para enviar um convite de aliado"
+    default: true
+  clans.acceptAllyInvite:
+    description: "Permissão para aceitar um convite de aliado"
+    default: true
+  clans.rejectAllyInvite:
+    description: "Permissão para rejeitar um convite de aliado"
+    default: true
+  clans.leave:
+    description: "Permissão para sair do clã"
+    default: true
+  clans.removeAlly:
+    description: "Permissão para remover um aliado"
+    default: true
+  clans.removeEnemy:
+    description: "Permissão para remover um inimigo"
+    default: true
+  clans.removeMember:
+    description: "Permissão para remover um membro"
+    default: true
+  clans.setPrefix:
+    description: "Permissão para definir a tag do clã"
+    default: true

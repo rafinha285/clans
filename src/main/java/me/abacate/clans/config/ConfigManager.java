@@ -39,16 +39,16 @@ public class ConfigManager {
     }
 
     public int getNoClanPoints(){
-        return config.getInt("clanPoints.");
+        return config.getInt("clanPoints.nopoints");
     }
     public int getFirstClanPoints(){
-        return config.getInt("clanPoints.");
+        return config.getInt("clanPoints.first");
     }
     public int getMidClanPoints(){
-        return config.getInt("clanPoints.");
+        return config.getInt("clanPoints.mid");
     }
     public int getFinalClanPoints(){
-        return config.getInt("clanPoints.");
+        return config.getInt("clanPoints.final");
     }
 
 
